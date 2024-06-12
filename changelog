@@ -1,0 +1,11 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [Unreleased]
+
+## [0.0.1] - 2024-06-12
+- Added trajectory profile generation and a user interface
+  - **Added by:** [Parsa Bakhshandeh] [parsa7676@gmail.com]
+  - **Date:** [June 11, 2024]
+
