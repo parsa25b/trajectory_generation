@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class TrajectoryProfile:
     "Trajectory Profile Class"
 
@@ -13,7 +14,22 @@ class TrajectoryProfile:
         position_end: float,
         velocity: float,
         acceleration: float,
-    ):
+    ) -> np.ndarray:
+        """_summary_
+
+        Args:
+            sampling_time (float)
+            position_start (float)
+            position_end (float)
+            velocity (float)
+            acceleration (float)
+
+        Raises:
+            ValueError: FIR Filter window size is zero
+
+        Returns:
+            np.ndarray: position trajectory profile
+        """        
         
         range_motion = position_end - position_start
         fir_filter_time_constant = velocity / acceleration
@@ -33,9 +49,12 @@ class TrajectoryProfile:
         )
 
         # velocity filter
-        filtered_velocity = np.convolve(vel_array, fir_filter, mode="full") * sampling_time
+        filtered_velocity = (
+            np.convolve(vel_array, fir_filter, mode="full") * sampling_time
+        )
         filtered_velocity = np.concatenate([[0], filtered_velocity, [0]])
-        filtered_position = np.cumsum(filtered_velocity * sampling_time)
+        filtered_position = (
+            np.cumsum(filtered_velocity * sampling_time) + position_start
+        )
 
         return filtered_position
-

@@ -8,7 +8,10 @@ import numpy as np
 from trajectory_profile import TrajectoryProfile
 
 class TrajectoryGUI:
+    """A graphical user interface for generating and visualizing trajectory profiles."""
+    
     def __init__(self, root):
+        """Initialize the GUI."""
         print("Initializing GUI")
         self.root = root
         self.root.title("Trajectory Profile GUI")
@@ -17,6 +20,7 @@ class TrajectoryGUI:
         self.create_widgets()
 
     def create_widgets(self):
+        """Create input widgets."""
         # Input labels and entries
         self.entries = {}
         self.params = ['Sampling Time', 'Position Start', 'Position End', 'Velocity', 'Acceleration']
@@ -44,6 +48,7 @@ class TrajectoryGUI:
         self.canvas.get_tk_widget().grid(row=len(self.params) + 2, column=0, columnspan=2)
 
     def plot_trajectory(self):
+        """Plot the trajectory based on user input."""
         try:
             # Get input values and validate
             sampling_time = self.validate_input('Sampling Time')
@@ -107,6 +112,7 @@ class TrajectoryGUI:
             messagebox.showerror("Error", f"An error occurred: {e}")
 
     def validate_input(self, param):
+        """Validate and convert input to float."""
         value = self.entries[param].get()
         try:
             return float(value)
@@ -114,6 +120,7 @@ class TrajectoryGUI:
             raise ValueError(f"Invalid value for {param}: {value}")
 
     def save_to_csv(self):
+        """Save trajectory data to a CSV file."""
         if hasattr(self, 'trajectory_data'):
             file_path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
             if file_path:
@@ -123,6 +130,7 @@ class TrajectoryGUI:
             messagebox.showerror("No Data", "No trajectory data to save. Please plot the trajectory first.")
 
     def clear_fields(self):
+        """Clear all input fields."""
         for entry in self.entries.values():
             entry.delete(0, tk.END)
 

@@ -12,7 +12,7 @@ from trajectory_profile import TrajectoryProfile
 
 
 class TestTrajectoryProfile(unittest.TestCase):
-
+    "Test class for trajectory profile"
 
     def test_trajectory_profile_1(self):
         trajectory_profile = TrajectoryProfile()
