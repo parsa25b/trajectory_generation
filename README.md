@@ -6,14 +6,14 @@ This project is a for generating trajectory profiles. It allows users to input p
 ## Installation
 
 1. Clone the repository to your local machine:
-git clone git@github.com:parsa25b/trajectory_generation.git
+'''git clone git@github.com:parsa25b/trajectory_generation.git'''
 
 2. Install the required dependencies:
-pip install -r requirements.txt
+'''pip install -r requirements.txt'''
 
 ## Usage
 3. Run the GUI application:
-python src/trajectory_gui.py
+'''python src/trajectory_gui.py'''
 
 4. Enter the desired parameters in the input fields and click the "Plot Trajectory" button to generate and visualize the trajectory profiles.
 
