@@ -29,12 +29,12 @@ class TrajectoryProfile:
 
         Returns:
             np.ndarray: position trajectory profile
-        """        
-        
+        """
+
         range_motion = position_end - position_start
         fir_filter_time_constant = velocity / acceleration
         if (range_motion / velocity) < fir_filter_time_constant:
-            velocity = range_motion / velocity
+            velocity = range_motion / fir_filter_time_constant
         duration = range_motion / velocity
 
         t_array = np.arange(0, duration, sampling_time)
