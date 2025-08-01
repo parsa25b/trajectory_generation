@@ -21,7 +21,8 @@ class TestTrajectoryProfile(unittest.TestCase):
         position_end= 50
         velocity= 50 
         acceleration= 500
-        filtered_position_array = trajectory_profile.filter(sampling_time= sampling_time, position_start= position_start, position_end= position_end, velocity= velocity, acceleration= acceleration)
+        jerk= 5000
+        filtered_position_array = trajectory_profile.filter(sampling_time= sampling_time, position_start= position_start, position_end= position_end, velocity= velocity, acceleration= acceleration, jerk= jerk)
         filtered_velocity_array = np.diff(filtered_position_array) / sampling_time
         filtered_acceleration_array = np.diff(filtered_velocity_array) / sampling_time
 
