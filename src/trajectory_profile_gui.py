@@ -23,7 +23,7 @@ class TrajectoryGUI:
         """Create input widgets."""
         # Input labels and entries
         self.entries = {}
-        self.params = ['Sampling Time', 'Position Start', 'Position End', 'Velocity', 'Acceleration']
+        self.params = ['Sampling Time', 'Position Start', 'Position End', 'Velocity', 'Acceleration', 'Jerk']
         
         for i, param in enumerate(self.params):
             label = ttk.Label(self.root, text=param)
@@ -56,10 +56,11 @@ class TrajectoryGUI:
             pos_end = self.validate_input('Position End')
             velocity = self.validate_input('Velocity')
             acceleration = self.validate_input('Acceleration')
+            jerk = self.validate_input('Jerk') # Added jerk input
 
             # Create a TrajectoryProfile instance
             tp = TrajectoryProfile()
-            filtered_position_array = tp.filter(sampling_time, pos_start, pos_end, velocity, acceleration)
+            filtered_position_array = tp.filter(sampling_time, pos_start, pos_end, velocity, acceleration, jerk) # Pass jerk
 
             if len(filtered_position_array) == 0:
                 raise ValueError("Filtered position array is empty.")
