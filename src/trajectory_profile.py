@@ -118,18 +118,14 @@ class PredefinedTrajectoryProfile:
 
     def _generate_sigmoid_sine_trajectory(self):
         """Generate sigmoid-sine product trajectory with improved parameters."""
-        # Create normalized time for sigmoid (center it in the duration)
         t_normalized = self.steepness * (self.time - self.center_time)
 
-        # Generate sigmoid envelope
         sigmoid_envelope = self._smooth_sigmoid(
             self.time, self.steepness, self.center_time
         )
 
-        # Generate sine wave
         sine_wave = np.sin(2 * np.pi * self.frequency * self.time)
 
-        # Create trajectory as sigmoid * sine + position offset
         trajectory = self.position_start + self.amplitude * sigmoid_envelope * sine_wave
 
         return trajectory
