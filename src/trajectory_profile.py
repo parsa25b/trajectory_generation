@@ -33,16 +33,17 @@ class TrajectoryProfile:
             np.ndarray: position trajectory profile
         """
 
-        range_motion = position_end - position_start
-        fir_filter_time_constant = velocity / acceleration
-        jerk_filter_time_constant = acceleration / jerk
+        range_motion = np.abs(position_end - position_start)
+        fir_filter_time_constant = np.abs(velocity / acceleration)
+        jerk_filter_time_constant = np.abs(acceleration / jerk)
+        direction = np.sign(position_end - position_start)
         
-        if (range_motion / velocity) < fir_filter_time_constant:
+        if np.abs(range_motion / velocity) < fir_filter_time_constant:
             velocity = range_motion / fir_filter_time_constant
-        duration = range_motion / velocity
+        duration = np.abs(range_motion / velocity)
 
         t_array = np.arange(0, duration, sampling_time)
-        vel_array = np.ones_like(t_array) * velocity
+        vel_array = np.ones_like(t_array) * velocity * direction
 
         # Check for zero window sizes
         if int((fir_filter_time_constant) / sampling_time) == 0:
@@ -50,30 +51,31 @@ class TrajectoryProfile:
         if int((jerk_filter_time_constant) / sampling_time) == 0:
             raise ValueError("Jerk FIR Filter window size is zero")
             
-        # Jerk filter (applied first to limit jerk)
+        # Jerk filter
         jerk_filter = (
             np.ones(int((jerk_filter_time_constant) / sampling_time))
             * 1
             / (jerk_filter_time_constant)
         )
         
-        # Acceleration filter (applied second to limit acceleration)
-        fir_filter = (
+        # Acceleration filter
+        acc_filter = (
             np.ones(int((fir_filter_time_constant) / sampling_time))
             * 1
             / (fir_filter_time_constant)
         )
 
-        # Apply jerk filter first
-        jerk_filtered_velocity = (
-            np.convolve(vel_array, jerk_filter, mode="full") * sampling_time
+        # apply acceleration filter
+        acc_filtered_velocity = (
+            np.convolve(vel_array, acc_filter, mode="full") * sampling_time
         )
         
-        # Then apply acceleration filter
-        filtered_velocity = (
-            np.convolve(jerk_filtered_velocity, fir_filter, mode="full") * sampling_time
+        # apply jerk filter
+        jerk_filtered_velocity = (
+            np.convolve(acc_filtered_velocity, jerk_filter, mode="full") * sampling_time
         )
-        filtered_velocity = np.concatenate([[0], filtered_velocity, [0]])
+        
+        filtered_velocity = np.concatenate([[0], jerk_filtered_velocity, [0]])
         filtered_position = (
             np.cumsum(filtered_velocity * sampling_time) + position_start
         )
